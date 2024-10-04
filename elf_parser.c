@@ -168,6 +168,7 @@
 
 
 #define SHT_SYMTAB	  2		/* Symbol table */
+#define SHT_GNU_HASH	  0x6ffffff6	/* GNU-style hash table.  */
 
 // Enum for ELF Class
 typedef enum {
@@ -797,7 +798,8 @@ void print_symbol_table(int fd, Elf64_Ehdr *header) {
     for (size_t i = 0; i < header->e_shnum; ++i) {
         const char *section_name = &section_string_table[section_headers[i].sh_name];
 
-        if (section_headers[i].sh_type == SHT_SYMTAB || section_headers[i].sh_type == SHT_DYNSYM) {
+        if (section_headers[i].sh_type == SHT_SYMTAB || section_headers[i].sh_type == SHT_DYNSYM
+            || section_headers[i].sh_type == SHT_GNU_HASH) {
             // Print the symbol table header
             printf("Symbol table '%s' contains %lu entries:\n", section_name,
                    section_headers[i].sh_size / sizeof(Elf64_Sym));
